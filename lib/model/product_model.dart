@@ -7,7 +7,7 @@ class Product {
   final double price;
   final double rating;
   final int stock;
-  final List<String> images;
+  final List<dynamic> images;
 
   Product({
     required this.id,
