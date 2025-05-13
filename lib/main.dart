@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:web_store/controller/providers/theme_provider.dart';
 import 'package:web_store/view/pages/home_page.dart';
 
-import 'core/constants/themes.dart';
+import 'constants/themes.dart';
 
 /// Entry point of the application
 void main() {
