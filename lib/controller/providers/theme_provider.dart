@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const String appThemeKey = 'theme';
-
 abstract class IThemeProvider {
   Future loadTheme();
 
