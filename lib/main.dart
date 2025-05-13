@@ -17,7 +17,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => ProductsProvider()),
       ],
 
-      /// Entry pointt
+      /// Entry point
       child: const StoreApp(),
     ),
   );
