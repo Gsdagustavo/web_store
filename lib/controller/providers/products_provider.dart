@@ -12,6 +12,8 @@ abstract class IProductsProvider {
 class ProductsProvider with ChangeNotifier implements IProductsProvider {
   final List<Product> products = [];
 
+  bool isLoading = false;
+
   ProductsProvider() {
     _init();
   }
@@ -22,15 +24,31 @@ class ProductsProvider with ChangeNotifier implements IProductsProvider {
 
   @override
   Future<void> loadProducts() async {
+    isLoading = true;
+    notifyListeners();
+
     final url = Uri.parse(productsUrl);
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
-      final products = json['products'];
-      debugPrint(products);
+      final productsJson = json['products'] as List<dynamic>;
+
+      products.clear();
+      for (final product in productsJson) {
+        products.add(Product.fromJson(product as Map<String, dynamic>));
+      }
+    } else if (response.statusCode == 404) {
+      throw Exception('Page not found');
+    } else if (response.statusCode == 401) {
+      throw Exception('Access not allowed');
     } else {
-      throw Exception('Erro ao carregar os produtos');
+      throw Exception(
+        'An error occurred while trying to fetch the products data',
+      );
     }
+
+    isLoading = false;
+    notifyListeners();
   }
 }
