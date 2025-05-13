@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:web_store/controller/providers/theme_provider.dart';
 import 'package:web_store/view/pages/home_page.dart';
 
+import 'core/constants/themes.dart';
+
 /// Entry point of the application
 void main() {
   runApp(
@@ -32,16 +34,10 @@ class StoreApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
 
           /// Defines the light theme
-          theme: ThemeData(
-            brightness: Brightness.light,
-            primarySwatch: Colors.deepPurple,
-          ),
+          theme: lightTheme,
 
           /// Defines the dark theme
-          darkTheme: ThemeData(
-            brightness: Brightness.dark,
-            primarySwatch: Colors.deepPurple,
-          ),
+          darkTheme: darkTheme,
 
           /// Defines whether the theme is dark or light based on the current
           /// state of the theme provider
