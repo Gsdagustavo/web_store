@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:web_store/controller/providers/theme_provider.dart';
 import 'package:web_store/view/pages/home_page.dart';
 
 void main() {
-  runApp(const StoreApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        /// Provider to keep track of the app's theme state
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+      ],
+      child: const StoreApp(),
+    ),
+  );
 }
 
 class StoreApp extends StatelessWidget {
@@ -10,15 +20,30 @@ class StoreApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Web Store',
-      debugShowCheckedModeBanner: false,
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          title: 'Web Store',
+          debugShowCheckedModeBanner: false,
 
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
+          theme: ThemeData(
+            brightness: Brightness.light,
+            primarySwatch: Colors.deepPurple,
+          ),
 
-      routes: {'/': (context) => const HomePage()},
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            primarySwatch: Colors.deepPurple,
+          ),
 
-      initialRoute: '/',
+          themeMode:
+              themeProvider.isLightTheme ? ThemeMode.light : ThemeMode.dark,
+
+          routes: {'/': (context) => const HomePage()},
+
+          initialRoute: '/',
+        );
+      },
     );
   }
 }
