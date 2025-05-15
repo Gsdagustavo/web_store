@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:web_store/view/widgets/product_image.dart';
 
 import '../../model/product_model.dart';
 
@@ -10,81 +11,75 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      /// Main column
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (product.images.first != null &&
-                product.images.first!.isNotEmpty)
-              Container(
-                height: 150,
-                width: double.infinity,
-                margin: const EdgeInsets.only(bottom: 16),
-                child: Image.network(
-                  product.images.first!,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) {
-                      return child;
-                    }
+    return GestureDetector(
+      onTap:
+          () => Navigator.pushNamed(
+            context,
+            '/productDetails',
+            arguments: product,
+          ),
+      child: Card(
+        /// Main column
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (product.images.first != null &&
+                  product.images.first!.isNotEmpty)
+                ProductImage(imageSrc: product.images.first),
 
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(child: Icon(Icons.image_not_supported));
-                  },
-                ),
+              /// Row with the product's title and the price
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      product.title,
+                      style: TextStyle(fontSize: 18),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+
+                  Text(
+                    '\$ ${product.price.toStringAsFixed(2)}',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.green.shade400,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
 
-            /// Row with the product's title and the price
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  product.title,
-                  style: TextStyle(fontSize: 18),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
+              /// Spacing between the title and the description
+              const SizedBox(height: 13),
 
-                Text(
-                  '\$ ${product.price.toStringAsFixed(2)}',
-                  style: TextStyle(fontSize: 14, color: Colors.green.shade400),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
+              /// Row with the product's description and stock infos
+              Row(
+                children: [
+                  /// Expanded to avoid text overflow
+                  Expanded(
+                    child: Text(
+                      product.description,
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
 
-            /// Spacing between the title and the description
-            const SizedBox(height: 13),
-
-            /// Row with the product's description and stock infos
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                /// Expanded to avoid text overflow
-                Expanded(
-                  child: Text(
-                    product.description,
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                    ),
                   ),
-                ),
 
-                Text(
-                  'Stock: ${product.stock.toString()}',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              ],
-            ),
-          ],
+                  Text(
+                    'Stock: ${product.stock.toString()}',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
