@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_store/constants/shared_preferences_keys.dart';
 import 'package:web_store/constants/urls.dart';
 
 /// Provider that contains a Login method and has login attributes,
@@ -13,10 +15,12 @@ class LoginProvider with ChangeNotifier {
   /// Login credentials
   ///
   /// If the Strings are empty, then no user is logged in
-  String? loginToken;
+  String loginToken = '';
   String username = '';
 
   String? errorMessage;
+
+  bool get isLoggedIn => loginToken.trim().isNotEmpty;
 
   /// Receives a [username] and a [password] and try to login using these credentials
   Future<void> login({
@@ -25,21 +29,19 @@ class LoginProvider with ChangeNotifier {
   }) async {
     isLoading = true;
     errorMessage = null;
-    notifyListeners();
 
     final loginMap = {'username': username.trim(), 'password': password.trim()};
 
     try {
       final response = await http.post(Uri.parse(loginUrl), body: loginMap);
 
-      isLoading = false;
-      notifyListeners();
-
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
         loginToken = data['accessToken'];
-        username = data['username'];
+
+        await _saveUser(token: loginToken);
+        debugPrint('user with token $loginToken saved to shared preferences');
       } else if (response.statusCode == 404) {
         errorMessage = 'Page not found';
       } else if (response.statusCode == 401) {
@@ -53,5 +55,35 @@ class LoginProvider with ChangeNotifier {
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> loadUser() async {
+    isLoading = true;
+    final prefs = await SharedPreferences.getInstance();
+    final savedToken = prefs.getString(loggedUserTokenKey);
+
+    if (savedToken != null) {
+      loginToken = savedToken;
+    }
+
+    notifyListeners();
+  }
+
+  /// Saves a user [token] to the [SharedPreferences] in the [loggedUserTokenKey] key
+  Future<void> _saveUser({required String token}) async {
+    isLoading = true;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(loggedUserTokenKey, token);
+    isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> logout() async {
+    isLoading = true;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(loggedUserTokenKey, '');
+    loginToken = '';
+    isLoading = false;
+    notifyListeners();
   }
 }
