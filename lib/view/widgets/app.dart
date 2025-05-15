@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_store/view/pages/login_page.dart';
 
 import '../../constants/themes.dart';
 import '../../controller/providers/theme_provider.dart';
@@ -29,10 +30,13 @@ class StoreApp extends StatelessWidget {
               themeProvider.isLightTheme ? ThemeMode.light : ThemeMode.dark,
 
           /// Routes
-          routes: {'/': (context) => const HomePage()},
+          routes: {
+            '/homePage': (context) => const HomePage(),
+            '/loginPage': (context) => const LoginPage(),
+          },
 
-          /// Defines the home page as the initial route
-          initialRoute: '/',
+          /// Defines the login page as the initial route
+          initialRoute: '/loginPage',
         );
       },
     );
