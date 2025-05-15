@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:web_store/controller/providers/login_provider.dart';
 import 'package:web_store/view/widgets/app_bar.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,6 +35,20 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
+  void sendForms() async {
+    if (formKey.currentState!.validate()) {
+      await Provider.of<LoginProvider>(
+        context,
+        listen: false,
+      ).login(username: nameController.text, password: passwordController.text);
+
+      setState(() {
+        nameController.clear();
+        passwordController.clear();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -42,6 +58,8 @@ class _LoginPageState extends State<LoginPage> {
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
+            key: formKey,
+
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -87,6 +105,24 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       border: OutlineInputBorder(),
                     ),
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: Consumer<LoginProvider>(
+                          builder: (context, value, child) {
+                            return ElevatedButton(
+                              onPressed: sendForms,
+                              child: Text('Login'),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
