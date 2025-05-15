@@ -9,6 +9,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool obscurePassword = true;
+
+  /// forms
   final formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
@@ -63,11 +66,25 @@ class _LoginPageState extends State<LoginPage> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: passwordController,
                     validator: passwordValidator,
-                    obscureText: true,
+                    obscureText: obscurePassword,
 
                     decoration: InputDecoration(
                       label: Text('Password'),
                       prefixIcon: Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        /// hide and show password toggling
+                        onPressed: () {
+                          setState(() {
+                            obscurePassword = !obscurePassword;
+                          });
+                        },
+
+                        icon: Icon(
+                          obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                      ),
                       border: OutlineInputBorder(),
                     ),
                   ),
