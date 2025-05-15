@@ -13,8 +13,10 @@ class LoginProvider with ChangeNotifier {
   /// Login credentials
   ///
   /// If the Strings are empty, then no user is logged in
-  String loginToken = '';
+  String? loginToken;
   String username = '';
+
+  String? errorMessage;
 
   /// Receives a [username] and a [password] and try to login using these credentials
   Future<void> login({
@@ -22,24 +24,34 @@ class LoginProvider with ChangeNotifier {
     required String password,
   }) async {
     isLoading = true;
-
-    final loginMap = {'username': username.trim(), 'password': password.trim()};
-    final response = await http.post(Uri.parse(loginUrl), body: loginMap);
-
-    isLoading = false;
+    errorMessage = null;
     notifyListeners();
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
+    final loginMap = {'username': username.trim(), 'password': password.trim()};
 
-      loginToken = data['accessToken'];
-      username = data['username'];
-    } else if (response.statusCode == 404) {
-      throw Exception('Page not found');
-    } else if (response.statusCode == 401) {
-      throw Exception('Access not allowed');
-    } else {
-      throw Exception('An error occurred while trying to login');
+    try {
+      final response = await http.post(Uri.parse(loginUrl), body: loginMap);
+
+      isLoading = false;
+      notifyListeners();
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        loginToken = data['accessToken'];
+        username = data['username'];
+      } else if (response.statusCode == 404) {
+        errorMessage = 'Page not found';
+      } else if (response.statusCode == 401) {
+        errorMessage = 'Incorrect Username or Password';
+      } else {
+        errorMessage = 'An error occurred while trying to login';
+      }
+    } catch (e) {
+      errorMessage = 'Connection error';
+    } finally {
+      isLoading = false;
+      notifyListeners();
     }
   }
 }

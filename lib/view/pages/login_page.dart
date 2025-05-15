@@ -37,16 +37,35 @@ class _LoginPageState extends State<LoginPage> {
 
   void sendForms() async {
     if (formKey.currentState!.validate()) {
-      await Provider.of<LoginProvider>(
-        context,
-        listen: false,
-      ).login(username: nameController.text, password: passwordController.text);
+      final provider = Provider.of<LoginProvider>(context, listen: false);
 
-      setState(() {
-        nameController.clear();
-        passwordController.clear();
-      });
+      try {
+        await provider.login(
+          username: nameController.text,
+          password: passwordController.text,
+        );
+
+        if (provider.loginToken != null) {
+          Navigator.pushReplacementNamed(context, '/homePage');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(provider.errorMessage!),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Something went wrong!')));
+      }
     }
+
+    setState(() {
+      nameController.clear();
+      passwordController.clear();
+    });
   }
 
   @override
