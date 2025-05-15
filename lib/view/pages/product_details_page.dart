@@ -19,11 +19,7 @@ class ProductDetailsPage extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: ProductImage(
-                imageSrc: product.images.first,
-              ),
-            ),
+            Expanded(child: ProductImage(imageSrc: product.images.first)),
 
             const SizedBox(width: 20),
 
@@ -33,24 +29,21 @@ class ProductDetailsPage extends StatelessWidget {
                   children: [
                     Text(
                       product.title,
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
 
                     const SizedBox(height: 10),
 
-                    Text(
-                      product.description,
-                      style: TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
+                    Text(product.description, style: TextStyle(fontSize: 14)),
                   ],
                 ),
               ),
             ),
 
-
-            IconButton(onPressed: () {}, icon: Icon(Icons.shopping_cart))
+            IconButton(onPressed: () {}, icon: Icon(Icons.shopping_cart)),
           ],
         ),
       ),
