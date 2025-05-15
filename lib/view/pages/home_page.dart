@@ -18,11 +18,28 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Consumer<ProductsProvider>(
           builder: (context, productsProvider, child) {
+            /// Shows to the user if any error has occurred
+            if (productsProvider.hasError) {
+              return Center(
+                child: Text(
+                  'An error occurred while loading the products: ${productsProvider.errorMessage}',
+                  style: TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
+
+            /// Shows a [CircularProgressIndicator] while the products
+            /// are being loaded
             if (productsProvider.isLoading) {
               return Center(child: const CircularProgressIndicator());
             }
 
             final products = productsProvider.products;
+
+            if (products.isEmpty) {
+              return Center(child: Text('No products were found'));
+            }
 
             return RefreshIndicator(
               onRefresh: () async {
