@@ -10,7 +10,7 @@ class LoginPage extends StatelessWidget {
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
       child: Scaffold(
-        appBar: MyAppBar(title: 'Login'),
+        appBar: const MyAppBar(title: 'Login'),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
 

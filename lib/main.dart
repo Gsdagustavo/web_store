@@ -14,11 +14,11 @@ void main() {
         /// Provider to keep track of the app's theme state
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
 
-        /// Provider to keep track of the products
-        ChangeNotifierProvider(create: (context) => ProductsProvider()),
-
-        /// Provider to handle login
+        /// Provider to keep track of the login state
         ChangeNotifierProvider(create: (context) => LoginProvider()),
+
+        /// Provider to keep track of the products state
+        ChangeNotifierProvider(create: (context) => ProductsProvider()),
       ],
 
       /// Entry point

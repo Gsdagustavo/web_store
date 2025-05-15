@@ -18,6 +18,7 @@ class ProductCard extends StatelessWidget {
             '/productDetails',
             arguments: product,
           ),
+
       child: Card(
         /// Main column
         child: Padding(
@@ -36,7 +37,7 @@ class ProductCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       product.title,
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -63,7 +64,7 @@ class ProductCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       product.description,
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
 
                       overflow: TextOverflow.ellipsis,
                       maxLines: 3,
@@ -72,7 +73,7 @@ class ProductCard extends StatelessWidget {
 
                   Text(
                     'Stock: ${product.stock.toString()}',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),

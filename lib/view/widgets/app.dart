@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_store/view/pages/login_page.dart';
 import 'package:web_store/view/pages/product_details_page.dart';
 
 import '../../constants/themes.dart';
 import '../../controller/providers/theme_provider.dart';
 import '../../model/product_model.dart';
 import '../pages/home_page.dart';
-import '../pages/login_page.dart';
 
 /// Main application
 class StoreApp extends StatelessWidget {
@@ -35,17 +35,11 @@ class StoreApp extends StatelessWidget {
           routes: {
             '/homePage': (context) => const HomePage(),
             '/loginPage': (context) => const LoginPage(),
-          },
-
-          onGenerateRoute: (settings) {
-            if (settings.name == '/productDetails') {
-              final product = settings.arguments as Product;
-              return MaterialPageRoute(
-                builder: (context) => ProductDetailsPage(product: product),
-              );
-            }
-
-            return null;
+            '/productDetails': (context) {
+              final arguments =
+                  ModalRoute.of(context)!.settings.arguments as Product;
+              return ProductDetailsPage(product: arguments);
+            },
           },
 
           /// Defines the login page as the initial route
