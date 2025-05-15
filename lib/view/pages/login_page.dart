@@ -11,22 +11,26 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  /// Whether the password text should be hidden or not
   bool obscurePassword = true;
 
   /// forms
   final formKey = GlobalKey<FormState>();
 
+  /// Text controllers
   final nameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  String? nameValidator(String? name) {
-    if (name == null || name.isEmpty) {
+  /// Validates the [username] on the [validator] of username text field
+  String? nameValidator(String? username) {
+    if (username == null || username.isEmpty) {
       return 'Invalid username';
     }
 
     return null;
   }
 
+  /// Validates the [password] on the [validator] of password text field
   String? passwordValidator(String? password) {
     if (password == null || password.isEmpty) {
       return 'Invalid password';
@@ -35,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
+  /// Try to validate the forms and calls the login provider
   void sendForms() async {
     if (formKey.currentState!.validate()) {
       final provider = Provider.of<LoginProvider>(context, listen: false);
@@ -76,10 +81,13 @@ class _LoginPageState extends State<LoginPage> {
         appBar: MyAppBar(title: 'Login'),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
+
+          /// Forms
           child: Form(
             key: formKey,
 
             child: Center(
+              /// Contains the text fields and the login button
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -116,6 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                           });
                         },
 
+                        /// Hide or Show password icon
                         icon: Icon(
                           obscurePassword
                               ? Icons.visibility_off
@@ -128,6 +137,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   const SizedBox(height: 30),
 
+                  /// Login button
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
