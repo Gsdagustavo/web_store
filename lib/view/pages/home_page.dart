@@ -13,7 +13,6 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BasePage(
       title: 'Home Page',
-      useNavigator: true,
 
       body: Padding(
         padding: const EdgeInsets.all(20.0),

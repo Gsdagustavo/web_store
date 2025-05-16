@@ -6,19 +6,19 @@ import 'package:web_store/view/widgets/bottom_navigator.dart';
 class BasePage extends StatelessWidget {
   const BasePage({
     super.key,
-    required this.body,
     required this.title,
-    required this.useNavigator,
+    this.useNavigator = true,
+    required this.body,
   });
 
-  /// The body of the scaffold
-  final Widget body;
+  /// Whether the page will have the [MyBottomNavigatorBar] or not
+  final bool useNavigator;
 
   /// The title that will be shown in the AppBar
   final String title;
 
-  /// Whether the page will have the [MyBottomNavigatorBar] or not
-  final bool useNavigator;
+  /// The body of the scaffold
+  final Widget body;
 
   @override
   Widget build(BuildContext context) {
