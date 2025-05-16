@@ -50,7 +50,7 @@ class _FormsWidgetState extends State<FormsWidget> {
           password: passwordController.text,
         );
 
-        if (provider.loginToken != null) {
+        if (provider.loggedUser != null) {
           Navigator.pushReplacementNamed(context, '/homePage');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(

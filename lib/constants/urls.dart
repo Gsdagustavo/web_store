@@ -4,3 +4,5 @@ const String productsUrl = 'https://dummyjson.com/products';
 
 /// DummyJson endpoint to make login
 const String loginUrl = 'https://dummyjson.com/auth/login';
+
+const String loginAuthUrl = 'https://dummyjson.com/auth/me';

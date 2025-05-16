@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_store/constants/shared_preferences_keys.dart';
 import 'package:web_store/constants/urls.dart';
 
+import '../../model/user_model.dart';
+
 /// Provider that contains a Login method and has login attributes,
 /// such as [loginToken] and [username]
 class LoginProvider with ChangeNotifier {
@@ -15,12 +17,11 @@ class LoginProvider with ChangeNotifier {
   /// Login credentials
   ///
   /// If the Strings are empty, then no user is logged in
-  String loginToken = '';
-  String username = '';
-
+  User? loggedUser;
+  String? token;
   String? errorMessage;
 
-  bool get isLoggedIn => loginToken.trim().isNotEmpty;
+  bool get isLoggedIn => loggedUser != null;
 
   /// Receives a [username] and a [password] and try to login using these credentials
   Future<void> login({
@@ -35,13 +36,21 @@ class LoginProvider with ChangeNotifier {
     try {
       final response = await http.post(Uri.parse(loginUrl), body: loginMap);
 
+      debugPrint(response.statusCode.toString());
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        loggedUser = User(
+          id: data['id'],
+          firstName: data['firstName'],
+          lastName: data['lastName'],
+          username: data['username'],
+          accessToken: data['accessToken'],
+          email: data['email'],
+          image: data['image'],
+        );
 
-        loginToken = data['accessToken'];
-
-        await _saveUser(token: loginToken);
-        debugPrint('user with token $loginToken saved to shared preferences');
+        await _saveUser();
       } else if (response.statusCode == 404) {
         errorMessage = 'Page not found';
       } else if (response.statusCode == 401) {
@@ -62,18 +71,40 @@ class LoginProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final savedToken = prefs.getString(loggedUserTokenKey);
 
-    if (savedToken != null) {
-      loginToken = savedToken;
+    debugPrint('Saved token: $savedToken');
+
+    if (savedToken != null && savedToken.isNotEmpty) {
+      try {
+        final headers = {'Authorization': 'Bearer $savedToken'};
+
+        final response = await http.get(
+          Uri.parse(loginAuthUrl),
+          headers: headers,
+        );
+
+        debugPrint('Authe me status code: ${response.statusCode}');
+        debugPrint('Authe me body: ${response.body}');
+
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          loggedUser = User.fromJson(data, accessToken: savedToken);
+          debugPrint('USER LOADED: ${loggedUser.toString()}');
+        }
+      } catch (e) {
+        errorMessage = e.toString();
+      } finally {
+        isLoading = false;
+        notifyListeners();
+      }
     }
 
     notifyListeners();
   }
 
-  /// Saves a user [token] to the [SharedPreferences] in the [loggedUserTokenKey] key
-  Future<void> _saveUser({required String token}) async {
-    isLoading = true;
+  /// Saves a user [token] to the [SharedPreferences] in the [loggedUserTokenKey] keyFuture<void> _saveUser({required String token}) async {isLoading = true;
+  Future<void> _saveUser() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(loggedUserTokenKey, token);
+    await prefs.setString(loggedUserTokenKey, loggedUser!.accessToken);
     isLoading = false;
     notifyListeners();
   }
@@ -82,7 +113,7 @@ class LoginProvider with ChangeNotifier {
     isLoading = true;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(loggedUserTokenKey, '');
-    loginToken = '';
+    loggedUser = null;
     isLoading = false;
     notifyListeners();
   }

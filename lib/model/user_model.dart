@@ -3,32 +3,32 @@ class User {
   final String firstName;
   final String lastName;
   final String username;
-  final String password;
+  final String accessToken;
   final String email;
-  final String token;
-  final String profilePictureUrl;
+  final String image;
 
   User({
     required this.id,
     required this.firstName,
     required this.lastName,
     required this.username,
-    required this.password,
+    required this.accessToken,
     required this.email,
-    required this.token,
-    required this.profilePictureUrl,
+    required this.image,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(
+    Map<String, dynamic> json, {
+    required String accessToken,
+  }) {
     return User(
       id: json['id'],
       firstName: json['firstName'],
       lastName: json['lastName'],
       username: json['username'],
-      password: json['password'],
       email: json['email'],
-      token: json['token'],
-      profilePictureUrl: json['profilePictureUrl'],
+      image: json['image'],
+      accessToken: accessToken,
     );
   }
 
@@ -41,25 +41,16 @@ class User {
           firstName == other.firstName &&
           lastName == other.lastName &&
           username == other.username &&
-          password == other.password &&
+          accessToken == other.accessToken &&
           email == other.email &&
-          token == other.token &&
-          profilePictureUrl == other.profilePictureUrl;
+          image == other.image;
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    firstName,
-    lastName,
-    username,
-    password,
-    email,
-    token,
-    profilePictureUrl,
-  );
+  int get hashCode =>
+      Object.hash(id, firstName, lastName, username, accessToken, email, image);
 
   @override
   String toString() {
-    return 'User{id: $id, firstName: $firstName, lastName: $lastName, username: $username, password: $password, email: $email, token: $token, profilePictureUrl: $profilePictureUrl}';
+    return 'User{id: $id, firstName: $firstName, lastName: $lastName, username: $username, accessToken: $accessToken, email: $email, image: $image}';
   }
 }
