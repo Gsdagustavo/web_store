@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_store/controller/providers/products_provider.dart';
-import 'package:web_store/view/widgets/app_bar.dart';
+import 'package:web_store/view/pages/base_page.dart';
 
 import '../widgets/product_card.dart';
 
@@ -11,8 +11,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(title: 'Home page'),
+    return BasePage(
+      title: 'Home Page',
+      useNavigator: true,
 
       body: Padding(
         padding: const EdgeInsets.all(20.0),
