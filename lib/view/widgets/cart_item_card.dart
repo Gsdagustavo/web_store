@@ -11,7 +11,7 @@ class CartItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       /// Padding
-      contentPadding: EdgeInsets.all(20),
+      // contentPadding: EdgeInsets.all(20),
 
       /// Item's image
       leading: BaseImage(imageUrl: cartItem.thumbnail),
@@ -29,7 +29,7 @@ class CartItemCard extends StatelessWidget {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Price: ${cartItem.price}'),
+          Text('Price: \$ ${cartItem.price.toStringAsFixed(2)}'),
           Text('Quantity: ${cartItem.quantity}'),
           Text('Total: ${cartItem.total}'),
         ],
