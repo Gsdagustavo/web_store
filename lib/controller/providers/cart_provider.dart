@@ -37,7 +37,7 @@ class CartProvider with ChangeNotifier {
       } else if (response.statusCode == 401) {
         throw Exception('Access not allowed');
       } else {
-        throw Exception('An error occurred while trying to fetch the products data');
+        throw Exception('An error occurred while trying to fetch the cart data');
       }
     } catch (e) {
       errorMessage = e.toString();
