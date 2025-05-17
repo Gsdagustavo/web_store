@@ -31,10 +31,15 @@ class LoginProvider with ChangeNotifier {
     isLoading = true;
     errorMessage = null;
 
+    debugPrint('login called');
+    debugPrint('Username: $username., password: $password');
+
     final loginMap = {'username': username.trim(), 'password': password.trim()};
 
     try {
       final response = await http.post(Uri.parse(loginUrl), body: loginMap);
+
+      debugPrint('çççççççççççççççççççççççççç ${response.body}');
 
       debugPrint(response.statusCode.toString());
 
@@ -103,6 +108,7 @@ class LoginProvider with ChangeNotifier {
 
   /// Saves a user [token] to the [SharedPreferences] in the [loggedUserTokenKey] keyFuture<void> _saveUser({required String token}) async {isLoading = true;
   Future<void> _saveUser() async {
+    isLoading = true;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(loggedUserTokenKey, loggedUser!.accessToken);
     isLoading = false;
@@ -113,6 +119,7 @@ class LoginProvider with ChangeNotifier {
     isLoading = true;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(loggedUserTokenKey, '');
+    token = null;
     loggedUser = null;
     isLoading = false;
     notifyListeners();

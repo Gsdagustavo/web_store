@@ -35,6 +35,7 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
+                    /// Title
                     child: Text(
                       product.title,
                       style: const TextStyle(fontSize: 18),
@@ -43,6 +44,7 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
 
+                  /// Price
                   Text(
                     '\$ ${product.price.toStringAsFixed(2)}',
                     style: TextStyle(
@@ -60,8 +62,8 @@ class ProductCard extends StatelessWidget {
               /// Row with the product's description and stock infos
               Row(
                 children: [
-                  /// Expanded to avoid text overflow
                   Expanded(
+                    /// Title
                     child: Text(
                       product.description,
                       style: const TextStyle(fontSize: 14, color: Colors.grey),
@@ -71,6 +73,7 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
 
+                  /// Stock
                   Text(
                     'Stock: ${product.stock.toString()}',
                     style: const TextStyle(fontSize: 12, color: Colors.grey),

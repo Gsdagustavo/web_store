@@ -27,9 +27,9 @@ class MyBottomNavigatorBar extends StatelessWidget {
           case 1:
             Navigator.pushReplacementNamed(context, '/profilePage');
             break;
-          // case 2:
-          //   Navigator.pushReplacementNamed((context, '/settingsPage');
-          //   break;
+          case 2:
+            Navigator.pushReplacementNamed(context, '/settingsPage');
+            break;
         }
       },
     );
