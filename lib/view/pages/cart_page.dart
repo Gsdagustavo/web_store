@@ -57,28 +57,26 @@ class CartPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   /// ListView containing infos about all products in the cart
-                  Expanded(
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final product = products[index];
-                        return CartItemCard(cartItem: product);
-                      },
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(height: 20);
-                      },
-                      itemCount: products.length,
-                    ),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      final product = products[index];
+                      return CartItemCard(cartItem: product);
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 20);
+                    },
+                    itemCount: products.length,
                   ),
 
                   /// Infos about the number of products and total items
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          'Products: ${cart!.totalProducts}',
+                          'Products: ${cart.totalProducts}',
                           style: TextStyle(fontSize: 18),
                         ),
 
@@ -103,18 +101,19 @@ class CartPage extends StatelessWidget {
                   ),
 
                   /// Button that should call the payment logic
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
                           onPressed: () {},
                           child: Text(
                             'Pay with credit card',
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
