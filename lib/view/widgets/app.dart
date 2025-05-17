@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_store/controller/providers/login_provider.dart';
+import 'package:web_store/view/pages/cart_page.dart';
 import 'package:web_store/view/pages/login_page.dart';
 import 'package:web_store/view/pages/product_details_page.dart';
 import 'package:web_store/view/pages/profile_page.dart';
@@ -39,6 +40,7 @@ class StoreApp extends StatelessWidget {
             '/': (context) => SplashScreen(),
             '/homePage': (context) => const HomePage(),
             '/loginPage': (context) => const LoginPage(),
+            '/cartPage': (context) => const CartPage(),
             '/profilePage': (context) => const ProfilePage(),
             '/settingsPage': (context) => const SettingsPage(),
             '/productDetails': (context) {
