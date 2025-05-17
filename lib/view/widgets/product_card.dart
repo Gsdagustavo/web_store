@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:web_store/view/widgets/product_image.dart';
+import 'package:web_store/view/widgets/base_image.dart';
 
 import '../../model/product_model.dart';
 
@@ -28,7 +28,7 @@ class ProductCard extends StatelessWidget {
             children: [
               if (product.images.first != null &&
                   product.images.first!.isNotEmpty)
-                ProductImage(imageSrc: product.images.first),
+                BaseImage(imageUrl: product.images.first),
 
               /// Row with the product's title and the price
               Row(

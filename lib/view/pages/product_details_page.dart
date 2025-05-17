@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:web_store/view/pages/base_page.dart';
-import 'package:web_store/view/widgets/product_image.dart';
+import 'package:web_store/view/widgets/base_image.dart';
 
 import '../../model/product_model.dart';
 
@@ -20,7 +20,7 @@ class ProductDetailsPage extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: ProductImage(imageSrc: product.images.first)),
+            Expanded(child: BaseImage(imageUrl: product.images.first)),
 
             const SizedBox(width: 20),
 
