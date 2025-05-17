@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_store/controller/providers/login_provider.dart';
+import 'package:web_store/core/keys/navigator_key.dart';
 import 'package:web_store/view/pages/cart_page.dart';
 import 'package:web_store/view/pages/login_page.dart';
 import 'package:web_store/view/pages/product_details_page.dart';
@@ -34,6 +35,8 @@ class StoreApp extends StatelessWidget {
           /// state of the theme provider
           themeMode:
               themeProvider.isLightTheme ? ThemeMode.light : ThemeMode.dark,
+
+          navigatorKey: navigatorKey,
 
           /// Routes
           routes: {
