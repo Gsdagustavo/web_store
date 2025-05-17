@@ -13,6 +13,7 @@ Future<Database> getDatabase() async {
     version: databaseVersion,
     onCreate: (db, version) async {
       await db.execute(CartTable.createTable);
+      await db.execute(ProductTable.createTable);
     },
   );
 }
