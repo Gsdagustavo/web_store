@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_store/controller/providers/cart_provider.dart';
 import 'package:web_store/controller/providers/login_provider.dart';
 import 'package:web_store/controller/providers/products_provider.dart';
 import 'package:web_store/controller/providers/theme_provider.dart';
@@ -19,6 +20,9 @@ void main() {
 
         /// Provider to keep track of the products state
         ChangeNotifierProvider(create: (context) => ProductsProvider()),
+
+        /// Provider to keep track of the cart state
+        ChangeNotifierProvider(create: (context) => CartProvider()),
       ],
 
       /// Entry point
