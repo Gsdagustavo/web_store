@@ -23,7 +23,27 @@ class CartPage extends StatelessWidget {
       /// of the current cart and logged user
       body: Consumer2<CartProvider, LoginProvider>(
         builder: (context, cartProvider, loginProvider, child) {
+          if (cartProvider.isLoading) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Loading your awesome choices...'),
+
+                  const SizedBox(height: 20),
+
+                  CircularProgressIndicator(),
+                ],
+              ),
+            );
+          }
+
           final cart = cartProvider.cart;
+
+          if (cart == null) {
+            return Center(child: Text('No products in the cart yet!'));
+          }
+
           final products = cartProvider.cart!.products;
 
           return RefreshIndicator(
@@ -37,16 +57,18 @@ class CartPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   /// ListView containing infos about all products in the cart
-                  ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return CartItemCard(cartItem: product);
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(height: 20);
-                    },
-                    itemCount: products.length,
+                  Expanded(
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        return CartItemCard(cartItem: product);
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(height: 20);
+                      },
+                      itemCount: products.length,
+                    ),
                   ),
 
                   /// Infos about the number of products and total items
@@ -81,20 +103,18 @@ class CartPage extends StatelessWidget {
                   ),
 
                   /// Button that should call the payment logic
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Pay with credit card',
-                              style: TextStyle(fontSize: 18),
-                            ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Pay with credit card',
+                            style: TextStyle(fontSize: 18),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
