@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_store/core/keys/navigator_key.dart';
 
 import '../../core/constants/shared_preferences_keys.dart';
 import '../../core/constants/urls.dart';
 import '../../model/user_model.dart';
+import 'cart_provider.dart';
 
 /// Provider that contains a Login method and has login attributes,
 /// such as [loginToken] and [username]
@@ -31,15 +34,12 @@ class LoginProvider with ChangeNotifier {
     isLoading = true;
     errorMessage = null;
 
-    debugPrint('login called');
     debugPrint('Username: $username., password: $password');
 
     final loginMap = {'username': username.trim(), 'password': password.trim()};
 
     try {
       final response = await http.post(Uri.parse(loginUrl), body: loginMap);
-
-      debugPrint(response.statusCode.toString());
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -54,6 +54,7 @@ class LoginProvider with ChangeNotifier {
         );
 
         await _saveUser();
+        await loadUser();
       } else if (response.statusCode == 404) {
         errorMessage = 'Page not found';
       } else if (response.statusCode == 401) {
@@ -74,8 +75,6 @@ class LoginProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final savedToken = prefs.getString(loggedUserTokenKey);
 
-    debugPrint('Saved token: $savedToken');
-
     if (savedToken != null && savedToken.isNotEmpty) {
       try {
         final headers = {'Authorization': 'Bearer $savedToken'};
@@ -85,12 +84,17 @@ class LoginProvider with ChangeNotifier {
           headers: headers,
         );
 
-        debugPrint('Authe me status code: ${response.statusCode}');
-        debugPrint('Authe me body: ${response.body}');
-
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
           loggedUser = User.fromJson(data, accessToken: savedToken);
+
+          final cartProvider = Provider.of<CartProvider>(
+            navigatorKey.currentContext!,
+            listen: false,
+          );
+
+          await cartProvider.loadCart(userId: loggedUser!.id);
+
           debugPrint('USER LOADED: ${loggedUser.toString()}');
         }
       } catch (e) {
