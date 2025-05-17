@@ -22,19 +22,26 @@ class HomePage extends StatelessWidget {
               onRefresh: productsProvider.searchProducts,
               child: Column(
                 children: [
-
                   /// Text field to search products
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 30),
                     child: TextField(
                       controller: productsProvider.searchController,
-                      onChanged: (_) async => await productsProvider.searchProducts(),
+                      onChanged:
+                          (_) async => await productsProvider.searchProducts(),
                       decoration: InputDecoration(
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                         prefixIcon: Icon(Icons.search),
-                        suffixIcon: IconButton(onPressed: productsProvider.clearSearch, icon: Icon(Icons.clear)),
+                        suffixIcon: IconButton(
+                          onPressed: productsProvider.clearSearch,
+                          icon: Icon(Icons.clear),
+                        ),
                         hintText: 'Search',
-                        hintStyle: TextStyle(color: Theme.of(context).focusColor),
+                        hintStyle: TextStyle(
+                          color: Theme.of(context).focusColor,
+                        ),
                       ),
                     ),
                   ),
@@ -67,7 +74,8 @@ class HomePage extends StatelessWidget {
 
                       return Expanded(
                         child: ListView.separated(
-                          separatorBuilder: (context, index) => const SizedBox(height: 15),
+                          separatorBuilder:
+                              (context, index) => const SizedBox(height: 15),
                           itemCount: products.length,
                           itemBuilder: (context, index) {
                             final product = products[index];

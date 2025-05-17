@@ -7,9 +7,6 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BasePage(
-      title: 'Cart',
-      body: Center(child: Text('Shopping cart!')),
-    );
+    return BasePage(title: 'Cart', body: Center(child: Text('Shopping cart!')));
   }
 }

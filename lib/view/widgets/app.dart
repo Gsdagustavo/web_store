@@ -7,8 +7,8 @@ import 'package:web_store/view/pages/product_details_page.dart';
 import 'package:web_store/view/pages/profile_page.dart';
 import 'package:web_store/view/pages/settings_page.dart';
 
-import '../../constants/themes.dart';
 import '../../controller/providers/theme_provider.dart';
+import '../../core/constants/themes.dart';
 import '../../model/product_model.dart';
 import '../pages/home_page.dart';
 

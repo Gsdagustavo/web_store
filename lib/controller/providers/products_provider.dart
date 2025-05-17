@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:web_store/constants/urls.dart';
 import 'package:web_store/model/product_model.dart';
+
+import '../../core/constants/urls.dart';
 
 abstract class IProductsProvider {
   Future loadProducts();
@@ -36,7 +37,8 @@ class ProductsProvider with ChangeNotifier implements IProductsProvider {
 
     filteredProducts.clear();
     for (final product in products) {
-      if (product.title.toLowerCase().contains(search) || product.description.toLowerCase().contains(search)) {
+      if (product.title.toLowerCase().contains(search) ||
+          product.description.toLowerCase().contains(search)) {
         filteredProducts.add(product);
       }
     }
@@ -74,7 +76,9 @@ class ProductsProvider with ChangeNotifier implements IProductsProvider {
       } else if (response.statusCode == 401) {
         throw Exception('Access not allowed');
       } else {
-        throw Exception('An error occurred while trying to fetch the products data');
+        throw Exception(
+          'An error occurred while trying to fetch the products data',
+        );
       }
     } catch (e) {
       errorMessage = e.toString();

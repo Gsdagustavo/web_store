@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:web_store/constants/shared_preferences_keys.dart';
-import 'package:web_store/constants/urls.dart';
 
+import '../../core/constants/shared_preferences_keys.dart';
+import '../../core/constants/urls.dart';
 import '../../model/user_model.dart';
 
 /// Provider that contains a Login method and has login attributes,
