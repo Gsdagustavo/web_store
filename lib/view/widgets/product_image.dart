@@ -16,7 +16,6 @@ class ProductImage extends StatelessWidget {
 
       margin: const EdgeInsets.only(bottom: 16),
       child: Image.network(
-        fit: BoxFit.cover,
         imageSrc,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) {
