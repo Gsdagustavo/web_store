@@ -10,7 +10,6 @@ class CartItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-
       /// Padding
       contentPadding: EdgeInsets.all(20),
 

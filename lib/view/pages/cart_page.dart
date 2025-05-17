@@ -20,7 +20,9 @@ class CartPage extends StatelessWidget {
           return Expanded(
             child: RefreshIndicator(
               onRefresh: () async {
-                await cartProvider.loadCart(userId: loginProvider.loggedUser!.id);
+                await cartProvider.loadCart(
+                  userId: loginProvider.loggedUser!.id,
+                );
               },
 
               child: ListView.separated(
