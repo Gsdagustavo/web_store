@@ -22,10 +22,13 @@ class BasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: const MyBottomNavigatorBar(),
-      appBar: MyAppBar(title: title),
-      body: body,
+    return GestureDetector(
+      onTap: FocusScope.of(context).unfocus,
+      child: Scaffold(
+        bottomNavigationBar: const MyBottomNavigatorBar(),
+        appBar: MyAppBar(title: title),
+        body: body,
+      ),
     );
   }
 }

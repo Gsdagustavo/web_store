@@ -18,43 +18,67 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: Consumer<ProductsProvider>(
           builder: (context, productsProvider, child) {
-            /// Shows to the user if any error has occurred
-            if (productsProvider.hasError) {
-              return Center(
-                child: Text(
-                  'An error occurred while loading the products: ${productsProvider.errorMessage}',
-                  style: TextStyle(color: Colors.red),
-                  textAlign: TextAlign.center,
-                ),
-              );
-            }
-
-            /// Shows a [CircularProgressIndicator] while the products
-            /// are being loaded
-            if (productsProvider.isLoading) {
-              return Center(child: const CircularProgressIndicator());
-            }
-
-            final products = productsProvider.products;
-
-            if (products.isEmpty) {
-              return Center(child: Text('No products were found'));
-            }
-
             return RefreshIndicator(
-              onRefresh: () async {
-                await productsProvider.loadProducts();
-              },
+              onRefresh: productsProvider.searchProducts,
+              child: Column(
+                children: [
 
-              child: ListView.separated(
-                separatorBuilder:
-                    (context, index) => const SizedBox(height: 15),
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  final product = products[index];
+                  /// Text field to search products
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    child: TextField(
+                      controller: productsProvider.searchController,
+                      onChanged: (_) async => await productsProvider.searchProducts(),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+                        prefixIcon: Icon(Icons.search),
+                        suffixIcon: IconButton(onPressed: productsProvider.clearSearch, icon: Icon(Icons.clear)),
+                        hintText: 'Search',
+                        hintStyle: TextStyle(color: Theme.of(context).focusColor),
+                      ),
+                    ),
+                  ),
 
-                  return ProductCard(product: product);
-                },
+                  /// Builder to show the products
+                  Builder(
+                    builder: (context) {
+                      /// Shows to the user if any error has occurred
+                      if (productsProvider.hasError) {
+                        return Center(
+                          child: Text(
+                            'An error occurred while loading the products: ${productsProvider.errorMessage}',
+                            style: TextStyle(color: Colors.red),
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }
+
+                      /// Shows a [CircularProgressIndicator] while the products
+                      /// are being loaded
+                      if (productsProvider.isLoading) {
+                        return Center(child: const CircularProgressIndicator());
+                      }
+
+                      final products = productsProvider.filteredProducts;
+
+                      if (products.isEmpty) {
+                        return Center(child: Text('No products were found'));
+                      }
+
+                      return Expanded(
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) => const SizedBox(height: 15),
+                          itemCount: products.length,
+                          itemBuilder: (context, index) {
+                            final product = products[index];
+
+                            return ProductCard(product: product);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             );
           },

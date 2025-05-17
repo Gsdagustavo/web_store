@@ -11,6 +11,9 @@ abstract class IProductsProvider {
 
 class ProductsProvider with ChangeNotifier implements IProductsProvider {
   final List<Product> products = [];
+  final List<Product> filteredProducts = [];
+
+  final searchController = TextEditingController();
 
   bool hasError = false;
   String errorMessage = '';
@@ -23,6 +26,28 @@ class ProductsProvider with ChangeNotifier implements IProductsProvider {
 
   void _init() async {
     await loadProducts();
+    filteredProducts.clear();
+    filteredProducts.addAll(products);
+    notifyListeners();
+  }
+
+  Future<void> searchProducts() async {
+    final search = searchController.text.trim().toLowerCase();
+
+    filteredProducts.clear();
+    for (final product in products) {
+      if (product.title.toLowerCase().contains(search) || product.description.toLowerCase().contains(search)) {
+        filteredProducts.add(product);
+      }
+    }
+    notifyListeners();
+  }
+
+  void clearSearch() {
+    filteredProducts.clear();
+    filteredProducts.addAll(products);
+    searchController.clear();
+    notifyListeners();
   }
 
   @override
@@ -49,9 +74,7 @@ class ProductsProvider with ChangeNotifier implements IProductsProvider {
       } else if (response.statusCode == 401) {
         throw Exception('Access not allowed');
       } else {
-        throw Exception(
-          'An error occurred while trying to fetch the products data',
-        );
+        throw Exception('An error occurred while trying to fetch the products data');
       }
     } catch (e) {
       errorMessage = e.toString();
