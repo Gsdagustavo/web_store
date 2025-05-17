@@ -2,6 +2,9 @@
 /// This one in specific is a Products API
 const String productsUrl = 'https://dummyjson.com/products';
 
+/// DummyJson endpoint to get a cart giving [userId]
+const String cartsUrl = 'https://dummyjson.com/carts/user';
+
 /// DummyJson endpoint to login
 const String loginUrl = 'https://dummyjson.com/auth/login';
 

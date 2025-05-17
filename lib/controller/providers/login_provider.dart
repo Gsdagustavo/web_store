@@ -39,8 +39,6 @@ class LoginProvider with ChangeNotifier {
     try {
       final response = await http.post(Uri.parse(loginUrl), body: loginMap);
 
-      debugPrint('çççççççççççççççççççççççççç ${response.body}');
-
       debugPrint(response.statusCode.toString());
 
       if (response.statusCode == 200) {
