@@ -20,7 +20,10 @@ class Cart {
   factory Cart.fromJson(Map<String, dynamic> json) {
     return Cart(
       id: json['id'],
-      products: json['products'],
+      products:
+          (json['products'] as List<dynamic>)
+              .map((product) => CartItem.fromJson(product))
+              .toList(),
       total: json['total'],
       userId: json['userId'],
       totalProducts: json['totalProducts'],
