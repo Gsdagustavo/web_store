@@ -9,7 +9,7 @@ import '../../controller/providers/login_provider.dart';
 /// This is a page that returns a [BasePage] containing infos about the logged
 /// user's shopping cart
 ///
-/// To show the products, a [LisView] is used with [CartItemCard] as LisTiles
+/// To show the products, a [ListView] is used with [CartItemCard] as ListTiles
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
@@ -38,14 +38,18 @@ class CartPage extends StatelessWidget {
             );
           }
 
+          /// Stores the instance of the Cart given by the provider
           final cart = cartProvider.cart;
 
+          /// If the cart is null (no products), a message is shown
           if (cart == null) {
             return Center(child: Text('No products in the cart yet!'));
           }
 
+          /// Stores the products from the cart
           final products = cartProvider.cart!.products;
 
+          /// The user can refresh the products by scrolling upwards
           return RefreshIndicator(
             onRefresh: () async {
               await cartProvider.loadCart(userId: loginProvider.loggedUser!.id);
