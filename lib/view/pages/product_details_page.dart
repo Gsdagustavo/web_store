@@ -20,7 +20,7 @@ class ProductDetailsPage extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: BaseImage(imageUrl: product.images.first)),
+            Expanded(child: BaseImage(imageUrl: product.thumbnail)),
 
             const SizedBox(width: 20),
 

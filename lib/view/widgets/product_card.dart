@@ -26,9 +26,7 @@ class ProductCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (product.images.first != null &&
-                  product.images.first!.isNotEmpty)
-                BaseImage(imageUrl: product.images.first),
+              BaseImage(imageUrl: product.thumbnail),
 
               /// Row with the product's title and the price
               Row(
