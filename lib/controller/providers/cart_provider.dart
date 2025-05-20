@@ -7,6 +7,11 @@ import 'package:web_store/model/cart_model.dart';
 import '../../core/constants/urls.dart';
 import '../../model/cart_item.dart';
 
+/// This class is a [Provider] made to keep track of a [Cart] based on the
+/// [logged user] information
+///
+/// All [carts] and [user] information are gathered from the DummyJson API
+/// All endpoints used are listed in the [urls] class
 class CartProvider with ChangeNotifier {
   Cart? cart;
 
@@ -15,6 +20,7 @@ class CartProvider with ChangeNotifier {
 
   bool isLoading = false;
 
+  /// Loads the [cart] based on the given [userId] and assigns it as a [Cart]
   Future<void> loadCart({required int userId}) async {
     isLoading = true;
     notifyListeners();
@@ -54,6 +60,7 @@ class CartProvider with ChangeNotifier {
     }
   }
 
+  /// Adds an item to the cart
   void addItem({required CartItem cartItem}) {
     if (cart != null) {
       cart!.addItem(cartItem: cartItem);
@@ -62,6 +69,7 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Removes an item from the cart
   void removeItem({required CartItem cartItem}) {
     if (cart != null) {
       cart!.removeItem(cartItem: cartItem);
@@ -70,6 +78,7 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// Deletes an item from the cart
   void deleteItem({required CartItem cartItem}) {
     if (cart != null) {
       cart!.deleteItem(cartItem: cartItem);

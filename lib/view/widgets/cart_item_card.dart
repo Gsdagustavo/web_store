@@ -4,6 +4,8 @@ import 'package:web_store/controller/providers/cart_provider.dart';
 import 'package:web_store/model/cart_item.dart';
 import 'package:web_store/view/widgets/base_image.dart';
 
+/// This class represents a [ListTile} that exhibits information about a
+/// product or array of products of a [Cart]
 class CartItemCard extends StatelessWidget {
   const CartItemCard({super.key, required this.cartItem});
 
@@ -51,6 +53,8 @@ class CartItemCard extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (context) {
+
+                        /// [AlertDialog] to confirm the deletion of a product
                         return AlertDialog(
                           title: Text('Remove Item'),
                           content: Text(
@@ -118,7 +122,7 @@ class CartItemCard extends StatelessWidget {
         },
       ),
 
-      // /// Background color
+      /// Background color
       tileColor: Theme.of(context).cardColor,
     );
   }
