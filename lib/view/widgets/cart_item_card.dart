@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:web_store/model/cart_item.dart';
-import 'package:web_store/view/widgets/base_image.dart';
 
 class CartItemCard extends StatelessWidget {
   const CartItemCard({super.key, required this.cartItem});
@@ -10,11 +9,13 @@ class CartItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      /// Padding
-      // contentPadding: EdgeInsets.all(20),
-
       /// Item's image
-      leading: BaseImage(imageUrl: cartItem.thumbnail),
+      ///
+      /// OBS: Due to a layout error, using the image as the leading of the
+      /// tile causes the page to become blank and crashing the app
+      ///
+      /// todo: fix this in the future
+      // leading: BaseImage(imageUrl: cartItem.thumbnail),
 
       /// Item's title
       title: Text(cartItem.title),
