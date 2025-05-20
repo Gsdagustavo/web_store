@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:web_store/model/cart_model.dart';
 
 import '../../core/constants/urls.dart';
+import '../../model/cart_item.dart';
 
 class CartProvider with ChangeNotifier {
   Cart? cart;
@@ -51,5 +52,21 @@ class CartProvider with ChangeNotifier {
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> addItem({required CartItem cartItem}) async {
+    if (cart != null) {
+      cart!.addItem(cartItem: cartItem);
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> removeItem({required CartItem cartItem}) async {
+    if (cart != null) {
+      cart!.removeItem(cartItem: cartItem);
+    }
+
+    notifyListeners();
   }
 }
