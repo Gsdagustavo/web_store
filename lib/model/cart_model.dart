@@ -45,6 +45,23 @@ class Cart {
     existingItem.quantity++;
   }
 
+  void removeItem({required CartItem cartItem}) {
+    CartItem? existingItem = products.firstWhereOrNull(
+          (item) => item == cartItem,
+    );
+
+    if (products.isEmpty || existingItem == null) {
+      throw Exception('Tried to remove an unexisting product from the cart');
+    }
+
+    if (existingItem.quantity == 1) {
+      products.remove(existingItem);
+      return;
+    }
+
+    existingItem.quantity--;
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
