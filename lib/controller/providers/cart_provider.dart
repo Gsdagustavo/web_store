@@ -69,4 +69,12 @@ class CartProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void deleteItem({required CartItem cartItem}) {
+    if (cart != null) {
+      cart!.deleteItem(cartItem: cartItem);
+    }
+
+    notifyListeners();
+  }
 }
