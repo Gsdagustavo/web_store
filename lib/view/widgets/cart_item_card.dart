@@ -41,8 +41,7 @@ class CartItemCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                onPressed:
-                    () => cartProvider.addItem(cartItem: cartItem),
+                onPressed: () => cartProvider.addItem(cartItem: cartItem),
                 icon: Icon(Icons.add),
               ),
 
@@ -53,7 +52,6 @@ class CartItemCard extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (context) {
-
                         /// [AlertDialog] to confirm the deletion of a product
                         return AlertDialog(
                           title: Text('Remove Item'),
