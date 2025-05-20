@@ -28,7 +28,7 @@ class CartPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Loading your awesome choices...'),
+                  Center(child: Text('Loading your awesome choices...')),
 
                   const SizedBox(height: 20),
 
@@ -52,31 +52,32 @@ class CartPage extends StatelessWidget {
           /// The user can refresh the products by scrolling upwards
           return RefreshIndicator(
             onRefresh: () async {
-              await cartProvider.loadCart(userId: loginProvider.loggedUser!.id);
+              cartProvider.loadCart(userId: loginProvider.loggedUser!.id);
             },
 
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// ListView containing infos about all products in the cart
-                  ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return CartItemCard(cartItem: product);
-                    },
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(height: 20);
-                    },
-                    itemCount: products.length,
-                  ),
+              padding: const EdgeInsets.all(12),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// ListView containing infos about all products in the cart
+                    Expanded(
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final product = products[index];
+                          return CartItemCard(cartItem: product);
+                        },
+                        separatorBuilder: (context, index) {
+                          return const SizedBox(height: 20);
+                        },
+                        itemCount: products.length,
+                      ),
+                    ),
 
-                  /// Infos about the number of products and total items
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: Row(
+                    /// Infos about the number of products and total items
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
@@ -90,36 +91,47 @@ class CartPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
 
-                  /// Total price of the cart
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: Text(
-                      'Total: \$ ${cart.total.toStringAsFixed(2)}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
+                    /// Total price of the cart
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        'Total: \$ ${cart.total.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                        ),
                       ),
                     ),
-                  ),
 
-                  /// Button that should call the payment logic
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    /// Button that should call the payment logic
+                    Row(
                       children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Pay with credit card',
-                            style: TextStyle(fontSize: 18),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Pay with credit card',
+                              style: TextStyle(fontSize: 18),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Pay with debit card',
+                              style: TextStyle(fontSize: 18),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
