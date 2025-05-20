@@ -8,6 +8,8 @@ class Product {
   final double rating;
   final int stock;
   final List<dynamic> images;
+  final String thumbnail;
+  final List<dynamic> tags;
 
   Product({
     required this.id,
@@ -18,6 +20,8 @@ class Product {
     required this.rating,
     required this.stock,
     required this.images,
+    required this.thumbnail,
+    required this.tags,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -30,6 +34,8 @@ class Product {
       rating: json['rating'],
       stock: json['stock'],
       images: json['images'],
+      thumbnail: json['thumbnail'],
+      tags: json['tags'],
     );
   }
 
@@ -43,6 +49,8 @@ class Product {
       'rating': rating,
       'stock': stock,
       'images': images,
+      'thumbnail': thumbnail,
+      'tags': tags,
     };
   }
 
@@ -58,7 +66,8 @@ class Product {
           price == other.price &&
           rating == other.rating &&
           stock == other.stock &&
-          images == other.images;
+          images == other.images &&
+          thumbnail == other.thumbnail;
 
   @override
   int get hashCode => Object.hash(
@@ -70,10 +79,11 @@ class Product {
     rating,
     stock,
     images,
+    thumbnail,
   );
 
   @override
   String toString() {
-    return 'Product{id: $id, title: $title, description: $description, category: $category, price: $price, rating: $rating, stock: $stock, images: $images}';
+    return 'Product{id: $id, title: $title, description: $description, category: $category, price: $price, rating: $rating, stock: $stock, images: $images, thumbnail: $thumbnail}';
   }
 }
