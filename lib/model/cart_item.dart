@@ -1,17 +1,15 @@
 class CartItem {
-  final int id;
-  final String title;
-  final double price;
-  final int quantity;
-  final double total;
-  final String thumbnail;
+  int id;
+  String title;
+  double price;
+  int quantity;
+  String thumbnail;
 
   CartItem({
     required this.id,
     required this.title,
     required this.price,
     required this.quantity,
-    required this.total,
     required this.thumbnail,
   });
 
@@ -21,10 +19,11 @@ class CartItem {
       title: json['title'],
       price: json['price'],
       quantity: json['quantity'],
-      total: json['total'],
       thumbnail: json['thumbnail'],
     );
   }
+
+  double get total => price * quantity;
 
   @override
   bool operator ==(Object other) =>
@@ -35,14 +34,13 @@ class CartItem {
           title == other.title &&
           price == other.price &&
           quantity == other.quantity &&
-          total == other.total &&
           thumbnail == other.thumbnail;
 
   @override
-  int get hashCode => Object.hash(id, title, price, quantity, total, thumbnail);
+  int get hashCode => Object.hash(id, title, price, quantity, thumbnail);
 
   @override
   String toString() {
-    return 'CartItem{id: $id, title: $title, price: $price, quantity: $quantity, total: $total, thumbnail: $thumbnail}';
+    return 'CartItem{id: $id, title: $title, price: $price, quantity: $quantity, thumbnail: $thumbnail}';
   }
 }

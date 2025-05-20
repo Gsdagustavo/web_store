@@ -1,21 +1,13 @@
+import 'package:collection/collection.dart';
+
 import 'cart_item.dart';
 
 class Cart {
   final int id;
   final List<CartItem> products;
-  final double total;
   final int userId;
-  final int totalProducts;
-  final int totalQuantity;
 
-  Cart({
-    required this.id,
-    required this.products,
-    required this.total,
-    required this.userId,
-    required this.totalProducts,
-    required this.totalQuantity,
-  });
+  Cart({required this.id, required this.products, required this.userId});
 
   factory Cart.fromJson(Map<String, dynamic> json) {
     return Cart(
@@ -24,11 +16,33 @@ class Cart {
           (json['products'] as List<dynamic>)
               .map((product) => CartItem.fromJson(product))
               .toList(),
-      total: json['total'],
       userId: json['userId'],
-      totalProducts: json['totalProducts'],
-      totalQuantity: json['totalQuantity'],
     );
+  }
+
+  int get totalProducts {
+    return products.length;
+  }
+
+  int get totalQuantity {
+    return products.fold(0, (sum, product) => sum += product.quantity);
+  }
+
+  double get total {
+    return products.fold(0, (sum, product) => sum += product.total);
+  }
+
+  void addItem({required CartItem cartItem}) {
+    CartItem? existingItem = products.firstWhereOrNull(
+      (item) => item == cartItem,
+    );
+
+    if (products.isEmpty || existingItem == null) {
+      products.add(cartItem);
+      return;
+    }
+
+    existingItem.quantity++;
   }
 
   @override
@@ -38,17 +52,13 @@ class Cart {
           runtimeType == other.runtimeType &&
           id == other.id &&
           products == other.products &&
-          total == other.total &&
-          userId == other.userId &&
-          totalProducts == other.totalProducts &&
-          totalQuantity == other.totalQuantity;
+          userId == other.userId;
 
   @override
-  int get hashCode =>
-      Object.hash(id, products, total, userId, totalProducts, totalQuantity);
+  int get hashCode => Object.hash(id, products, userId);
 
   @override
   String toString() {
-    return 'Cart{id: $id, products: $products, total: $total, userId: $userId, totalProducts: $totalProducts, totalQuantity: $totalQuantity}';
+    return 'Cart{id: $id, products: $products, userId: $userId}';
   }
 }
