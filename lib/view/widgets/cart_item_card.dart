@@ -46,6 +46,43 @@ class CartItemCard extends StatelessWidget {
                     onPressed: () => cartProvider.addItem(cartItem: cartItem),
                     icon: Icon(Icons.add),
                   ),
+
+                  /// button to remove an unit of the item
+                  IconButton(
+                    onPressed: () {
+                      if (cartItem.quantity == 1) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Remove Item'),
+                              content: Text(
+                                'Are you sure you want to remove this item from the cart?',
+                              ),
+
+                              actions: [
+                                TextButton(
+                                  onPressed: Navigator.of(context).pop,
+                                  child: Text('Cancel'),
+                                ),
+
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop;
+                                    cartProvider.removeItem(cartItem: cartItem);
+                                  },
+                                  child: Text('Remove'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        cartProvider.removeItem(cartItem: cartItem);
+                      }
+                    },
+                    icon: Icon(Icons.remove),
+                  ),
                 ],
               ),
             ],
