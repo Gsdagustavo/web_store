@@ -54,7 +54,7 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addItem({required CartItem cartItem}) async {
+  void addItem({required CartItem cartItem}) {
     if (cart != null) {
       cart!.addItem(cartItem: cartItem);
     }
@@ -62,7 +62,7 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> removeItem({required CartItem cartItem}) async {
+  void removeItem({required CartItem cartItem}) {
     if (cart != null) {
       cart!.removeItem(cartItem: cartItem);
     }
