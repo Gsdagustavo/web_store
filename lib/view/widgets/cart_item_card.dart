@@ -38,52 +38,80 @@ class CartItemCard extends StatelessWidget {
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Wrap(
-                direction: Axis.horizontal,
-                children: [
-                  /// button to add an unit of the item
-                  IconButton(
-                    onPressed: () => cartProvider.addItem(cartItem: cartItem),
-                    icon: Icon(Icons.add),
-                  ),
+              IconButton(
+                onPressed:
+                    () => cartProvider.addItem(cartItem: cartItem),
+                icon: Icon(Icons.add),
+              ),
 
-                  /// button to remove an unit of the item
-                  IconButton(
-                    onPressed: () {
-                      if (cartItem.quantity == 1) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text('Remove Item'),
-                              content: Text(
-                                'Are you sure you want to remove this item from the cart?',
-                              ),
+              /// button to remove an unit of the item
+              IconButton(
+                onPressed: () {
+                  if (cartItem.quantity == 1) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Remove Item'),
+                          content: Text(
+                            'Are you sure you want to remove this item from the cart?',
+                          ),
 
-                              actions: [
-                                TextButton(
-                                  onPressed: Navigator.of(context).pop,
-                                  child: Text('Cancel'),
-                                ),
+                          actions: [
+                            TextButton(
+                              onPressed: Navigator.of(context).pop,
+                              child: Text('Cancel'),
+                            ),
 
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop;
-                                    cartProvider.removeItem(cartItem: cartItem);
-                                  },
-                                  child: Text('Remove'),
-                                ),
-                              ],
-                            );
-                          },
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                cartProvider.removeItem(cartItem: cartItem);
+                              },
+                              child: Text('Remove'),
+                            ),
+                          ],
                         );
-                      } else {
-                        cartProvider.removeItem(cartItem: cartItem);
-                      }
+                      },
+                    );
+                  } else {
+                    cartProvider.removeItem(cartItem: cartItem);
+                  }
+                },
+                icon: Icon(Icons.remove),
+              ),
+
+              /// button to remove an item
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Remove Item'),
+                        content: Text(
+                          'Are you sure you want to remove this item from the cart?',
+                        ),
+
+                        actions: [
+                          TextButton(
+                            onPressed: Navigator.of(context).pop,
+                            child: Text('Cancel'),
+                          ),
+
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              cartProvider.deleteItem(cartItem: cartItem);
+                            },
+                            child: Text('Remove'),
+                          ),
+                        ],
+                      );
                     },
-                    icon: Icon(Icons.remove),
-                  ),
-                ],
+                  );
+                },
+                icon: Icon(Icons.clear),
               ),
             ],
           );
