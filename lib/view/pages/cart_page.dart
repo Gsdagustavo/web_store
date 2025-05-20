@@ -42,7 +42,7 @@ class CartPage extends StatelessWidget {
           final cart = cartProvider.cart;
 
           /// If the cart is null (no products), a message is shown
-          if (cart == null) {
+          if (cart == null || cart.products.isEmpty) {
             return Center(child: Text('No products in the cart yet!'));
           }
 
@@ -96,7 +96,7 @@ class CartPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: Text(
-                      'Total: \$ ${cart.total}',
+                      'Total: \$ ${cart.total.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
