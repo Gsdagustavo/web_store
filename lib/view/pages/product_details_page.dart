@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:web_store/controller/providers/cart_provider.dart';
+import 'package:web_store/model/cart_item.dart';
 import 'package:web_store/view/pages/base_page.dart';
 import 'package:web_store/view/widgets/base_image.dart';
 
@@ -44,7 +47,23 @@ class ProductDetailsPage extends StatelessWidget {
               ),
             ),
 
-            IconButton(onPressed: () {}, icon: Icon(Icons.shopping_cart)),
+            Consumer<CartProvider>(
+              builder: (context, cartProvider, child) {
+                return IconButton(
+                  onPressed: () {
+                    cartProvider.addItem(
+                      cartItem: CartItem.fromProduct(product),
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Product added to the cart!')),
+                    );
+                  },
+
+                  icon: Icon(Icons.shopping_cart),
+                );
+              },
+            ),
           ],
         ),
       ),
