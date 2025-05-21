@@ -25,6 +25,9 @@ class CartPage extends StatelessWidget {
         builder: (context, cartProvider, loginProvider, child) {
           int userId = loginProvider.loggedUser!.id;
 
+          /// If there is any error in the cart provider, shows it on the screen
+          ///
+          /// Also shows a button that loads the cart again
           if (cartProvider.hasError) {
             return Center(
               child: Column(
@@ -46,6 +49,7 @@ class CartPage extends StatelessWidget {
             );
           }
 
+          /// If the cart provider is loading data, shows a loading screen
           if (cartProvider.isLoading) {
             return Center(
               child: Column(
