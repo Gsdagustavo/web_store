@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'cart_item.dart';
 
@@ -51,14 +52,18 @@ class Cart {
   /// Adds a [CartItem] to the [products] list
   void addItem({required CartItem cartItem}) {
     CartItem? existingItem = products.firstWhereOrNull(
-      (item) => item == cartItem,
+      (item) => item.id == cartItem.id,
     );
+
+    debugPrint('p: $existingItem');
 
     if (products.isEmpty || existingItem == null) {
       products.add(cartItem);
+      debugPrint('single product added');
       return;
     }
 
+    debugPrint('product quantity added');
     existingItem.quantity++;
   }
 
