@@ -1,3 +1,5 @@
+import 'package:web_store/model/product_model.dart';
+
 class CartItem {
   int id;
   String title;
@@ -20,6 +22,16 @@ class CartItem {
       price: json['price'],
       quantity: json['quantity'],
       thumbnail: json['thumbnail'],
+    );
+  }
+
+  factory CartItem.fromProduct(Product product, {int quantity = 1}) {
+    return CartItem(
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      quantity: quantity,
+      thumbnail: product.thumbnail,
     );
   }
 
