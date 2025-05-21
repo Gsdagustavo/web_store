@@ -23,6 +23,29 @@ class CartPage extends StatelessWidget {
       /// of the current cart and logged user
       body: Consumer2<CartProvider, LoginProvider>(
         builder: (context, cartProvider, loginProvider, child) {
+          int userId = loginProvider.loggedUser!.id;
+
+          if (cartProvider.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Sorry! An error happened while trying to load your products',
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  ElevatedButton(
+                    onPressed: () => cartProvider.loadCart(userId: userId),
+                    child: Text('Try again'),
+                  ),
+                ],
+              ),
+            );
+          }
+
           if (cartProvider.isLoading) {
             return Center(
               child: Column(
@@ -43,7 +66,18 @@ class CartPage extends StatelessWidget {
 
           /// If the cart is null (no products), a message is shown
           if (cart == null || cart.products.isEmpty) {
-            return Center(child: Text('No products in the cart yet!'));
+            return RefreshIndicator(
+              onRefresh: () async {
+                cartProvider.loadCart(userId: userId);
+              },
+              child: Center(
+                child: ListView(
+                  children: [
+                    Center(child: Text('No products in the cart yet!')),
+                  ],
+                ),
+              ),
+            );
           }
 
           /// Stores the products from the cart
@@ -52,86 +86,84 @@ class CartPage extends StatelessWidget {
           /// The user can refresh the products by scrolling upwards
           return RefreshIndicator(
             onRefresh: () async {
-              cartProvider.loadCart(userId: loginProvider.loggedUser!.id);
+              cartProvider.loadCart(userId: userId);
             },
 
             child: Padding(
               padding: const EdgeInsets.all(12),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// ListView containing infos about all products in the cart
-                    Expanded(
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          final product = products[index];
-                          return CartItemCard(cartItem: product);
-                        },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(height: 20);
-                        },
-                        itemCount: products.length,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// ListView containing infos about all products in the cart
+                  Expanded(
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        return CartItemCard(cartItem: product);
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(height: 20);
+                      },
+                      itemCount: products.length,
+                    ),
+                  ),
+
+                  /// Infos about the number of products and total items
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        'Products: ${cart.totalProducts}',
+                        style: TextStyle(fontSize: 18),
+                      ),
+
+                      Text(
+                        'Quantity: ${cart.totalQuantity}',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
+                  ),
+
+                  /// Total price of the cart
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: Text(
+                      'Total: \$ ${cart.total.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
                       ),
                     ),
+                  ),
 
-                    /// Infos about the number of products and total items
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          'Products: ${cart.totalProducts}',
-                          style: TextStyle(fontSize: 18),
-                        ),
-
-                        Text(
-                          'Quantity: ${cart.totalQuantity}',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-
-                    /// Total price of the cart
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Text(
-                        'Total: \$ ${cart.total.toStringAsFixed(2)}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
+                  /// Button that should call the payment logic
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Pay with credit card',
+                            style: TextStyle(fontSize: 18),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
-                    ),
 
-                    /// Button that should call the payment logic
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Pay with credit card',
-                              style: TextStyle(fontSize: 18),
-                              textAlign: TextAlign.center,
-                            ),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Pay with debit card',
+                            style: TextStyle(fontSize: 18),
+                            textAlign: TextAlign.center,
                           ),
                         ),
-
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Pay with debit card',
-                              style: TextStyle(fontSize: 18),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
           );
