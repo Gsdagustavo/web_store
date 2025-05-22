@@ -13,6 +13,7 @@ abstract class IProductsProvider {
 class ProductsProvider with ChangeNotifier implements IProductsProvider {
   final List<Product> products = [];
   final List<Product> filteredProducts = [];
+  final List<String> selectedTags = [];
 
   final searchController = TextEditingController();
 
@@ -36,13 +37,45 @@ class ProductsProvider with ChangeNotifier implements IProductsProvider {
     final search = searchController.text.trim().toLowerCase();
 
     filteredProducts.clear();
+
     for (final product in products) {
-      if (product.title.toLowerCase().contains(search) ||
-          product.description.toLowerCase().contains(search)) {
-        filteredProducts.add(product);
+      final productTags = product.tags;
+
+      bool containsAnyTag =
+          selectedTags.isEmpty ||
+          selectedTags.any((tag) => productTags.contains(tag));
+
+      /// Filter the tags
+      if (containsAnyTag) {
+        /// Product's title and description
+        final String title = product.title.trim().toLowerCase();
+        final String description = product.description.trim().toLowerCase();
+
+        bool containsTitle = title.contains(search);
+        bool containsDescription = description.contains(search);
+
+        /// Both title and description are in the search
+        if (containsTitle && containsDescription) {
+          filteredProducts.add(product);
+        }
       }
     }
+
+    debugPrint('filtered products: $filteredProducts');
+
     notifyListeners();
+  }
+
+  void addTag(String tag) {
+    selectedTags.add(tag);
+  }
+
+  void deleteTag(String tag) {
+    selectedTags.remove(tag);
+  }
+
+  void removeTags() {
+    selectedTags.clear();
   }
 
   void clearSearch() {
